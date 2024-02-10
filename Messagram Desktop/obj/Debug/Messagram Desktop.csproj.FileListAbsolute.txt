@@ -1,0 +1,9 @@
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\bin\Debug\Messagram Desktop.exe.config
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\bin\Debug\Messagram Desktop.exe
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\bin\Debug\Messagram Desktop.pdb
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.csproj.AssemblyReference.cache
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram_Desktop.Properties.Resources.resources
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.csproj.GenerateResource.cache
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.csproj.CoreCompileInputs.cache
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.exe
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.pdb
