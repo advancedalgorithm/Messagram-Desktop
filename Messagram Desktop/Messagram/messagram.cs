@@ -19,7 +19,7 @@ namespace Messagram_Desktop.Messagram
     {
         /* Client Application Information */
         public string CLIENT_NAME = "official_messagram_client_v.0.0.1";
-        public double CLIENT_VERSION = 0.1;
+        public string CLIENT_VERSION = "0.0.1";
 
         /* Client's Current User Information */
         public string Username;
@@ -44,7 +44,7 @@ namespace Messagram_Desktop.Messagram
         public messagram(string client_name, string client_v)
         {
             this.CLIENT_NAME = client_name;
-            this.CLIENT_VERSION = Convert.ToDouble(client_v);
+            this.CLIENT_VERSION = client_v;
             this.retrieveHardwareInfo();
         }
 
@@ -79,11 +79,11 @@ namespace Messagram_Desktop.Messagram
                 this.Messagram_IO = this.MessagramServer.GetStream();
 
                 /* Request Login API Endpoint For Session ID */
-                this.sessionID = new WebClient().DownloadString($"https://api.messagram.io/auth?username={username}&password={password}&hwid={this.HWID}");
+                //this.sessionID = new WebClient().DownloadString($"https://api.messagram.io/auth?username={username}&password={password}&hwid={this.HWID}");
 
                 /* Invalid Login Information Provided */
-                if (this.sessionID == String.Empty)
-                    return (new messaResponse("", true, Resp_T.NULL, Cmd_T.INVALID_LOGIN_INFO));
+                //if (this.sessionID == String.Empty)
+                //    return (new messaResponse("", true, Resp_T.NULL, Cmd_T.INVALID_LOGIN_INFO));
 
                 /* BUILD AUTH COMMAND */
                 string[] cmd_info = { username, this.sessionID, this.HWID, this.CLIENT_NAME, $"{this.CLIENT_VERSION}" };
@@ -179,7 +179,7 @@ namespace Messagram_Desktop.Messagram
          */
         public messaResponse SendCmd(messaResponse r)
         {
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes(r.data);
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes($"{r.data}\n");
             this.Messagram_IO.Write(data, 0, data.Length);
 
             data = new Byte[256];

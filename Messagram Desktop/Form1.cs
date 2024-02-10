@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Messagram_Desktop.Messagram;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,12 @@ namespace Messagram_Desktop
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            messagram m = new messagram("official_client", "0.0.1");
+            m.ConnectnAuthorize("root", "root");
         }
     }
 }

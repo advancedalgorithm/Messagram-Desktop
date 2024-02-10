@@ -60,7 +60,7 @@ namespace Messagram_Desktop.Messagram
                 return;
 
             /* resp_t Should never have spaces */
-            this.resp_t = Response.resp2type(info[1].Replace("resp_t:", "").Replace(" ", ""));
+            this.resp_t = objects.resp2type(info[1].Replace("resp_t:", "").Replace(" ", ""));
 
             /* NOTHING TO DO HERE */
             if (this.resp_t == Resp_T.NULL)

@@ -126,10 +126,25 @@ namespace Messagram_Desktop.Messagram
         /* Chats */
         CREATE_COMMUNITY_CHAT,              // CREATE A NEW CHAT
         EDIT_COMMUNITY_CHAT,                // EDIT THE CHAT SETTINGS (Perms, Name, Desc)
-        DEL_COMMUNITY_CHAT                  // DELETE THE CHAT
+        DEL_COMMUNITY_CHAT,                 // DELETE THE CHAT
+
+        /*
+         * 
+         *          EVENT NOTIFICATIONS
+         * 
+         * Commands from server, Actions from/by other users
+         * 
+         * Mainly used for receiving commands from server which is
+         * usually when a user requests or msg another user
+         */
+
+        ACCOUNT_BAN,                        // ACCOUNT BANNED
+        FRIEND_REQ_RECEIVED,                // USER FRIEND REQUEST HAS BEEN RECEIVED
+        DM_MSG_RECEIVED,                    // USER DM MESSAGE HAS BEEN RECEIVED
+        COMMUNITY_MSG_RECEIVED              // COMMUNITY MESSAGED RECEIVED
     }
 
-    public class Response
+    public class objects
     {
         public static Resp_T resp2type(string resp)
         {
@@ -148,6 +163,12 @@ namespace Messagram_Desktop.Messagram
             }
 
             return Resp_T.NULL;
+        }
+
+        public static Cmd_T cmd2type(string cmd)
+        {
+            // TO-DO
+            return Cmd_T.NULL;
         }
     }
 }

@@ -7,3 +7,4 @@ C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messag
 C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.csproj.CoreCompileInputs.cache
 C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.exe
 C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram Desktop.pdb
+C:\Users\jeffd\source\repos\Messagram Desktop\Messagram Desktop\obj\Debug\Messagram_Desktop.Form1.resources
