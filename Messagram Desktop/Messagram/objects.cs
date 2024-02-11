@@ -41,7 +41,8 @@ namespace Messagram_Desktop.Messagram
 
         /* REQUEST ERRORS */
         INVALID_CMD,
-        INVALID_PARAMETERS,
+        INVALID_PARAMETERS,                 // INVALID PARAMETERS SENT TO SERVER
+        INVALID_PERM,                       // INVALID PERMS (USED FOR COMMUNITY ROLES ETCS)
         INVALID_OPERATION,                  // A reason will be sent why. This is more for the developer using the API
 
         /* 
@@ -64,6 +65,8 @@ namespace Messagram_Desktop.Messagram
 
         /* FAIL OPERATIONS */
         INVALID_LOGIN_INFO,                 // INVALID USERNAME OR PASSWORD
+        ACCOUNT_PERM_BAN,                   // ACCOUNT PERM BANNED
+        ACCOUNT_TEMP_BAN,                   // ACCOUNT TEMP BANNED
         FORCE_CONFIRM_EMAIL,                // FORCE USER TO VERIFY EMAIL TO USE THE ACCOUNT
         FORCE_DEVICE_TRUST,                 // UNKNOWN DEVICE, TRUST CONFIRMATION EMAIL SENT
         FORCE_ADD_PHONE_NUMBER_REQUEST,     // FORCE USER TO ADD A PHONE NUMBER
@@ -117,6 +120,10 @@ namespace Messagram_Desktop.Messagram
         CREATE_COMMUNITY,                   // CREATE A COMMUNITY (LIKE A DISCORD SERVER)
         EDIT_COMMUNITY,                     // Edit Community Info/Settings (EDIT A COMMUNITY SETTINGS OR INFO)
         INVO_TOGGLE,                        // Enable/Disable Community Invites (EDIT THE INVITE TOGGLE)
+        KICK_USER,                          // Kick a user from the community
+        BAN_USER,                           // Ban a user from the community
+        DEL_MSG,                            // Delete a message from the community chat
+
 
         /* Roles */
         CREATE_COMMUNITY_ROLE,              // CREATE A ROLE
@@ -163,12 +170,6 @@ namespace Messagram_Desktop.Messagram
             }
 
             return Resp_T.NULL;
-        }
-
-        public static Cmd_T cmd2type(string cmd)
-        {
-            // TO-DO
-            return Cmd_T.NULL;
         }
     }
 }

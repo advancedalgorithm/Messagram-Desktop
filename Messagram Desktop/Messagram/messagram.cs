@@ -15,6 +15,34 @@ using System.Security.Cryptography;
 
 namespace Messagram_Desktop.Messagram
 {
+    /*
+     * 
+     *          The Official Messagram Client Library
+     * 
+     * Quick Start Example:
+     * 
+     * Form Open:
+     * 
+     *     - Set a Messagram Property For The Main Client Form
+     *     - Add a Messagram Function Argument to the Form's Constructor
+     *     
+     *          messagram m = new messagram("CLIENT_NAME", "CLIENT_VERSION");
+     *          
+     * Upon Login: 
+     *          
+     *          messaResponse r = m.ConnectnAuthorize(textBox1.Text, textBox2.Text);
+     *          if (r.resp_t != Resp_T.SOCKET_CONNECTED)
+     *          {
+     *              MessageBox.Show("Messagram server is down!");
+     *              Environment.Exit(0);
+     *          } else if(r.cmd == Cmd_T.SUCCESSFUL_LOGIN)
+     *          {
+     *              MessageBox.Show($"Welcome {username} to Messagram!");
+     *              ClientForm c = new ClientForm(m) // YOUR CLIENT FORM HERE
+     *              this.close();
+     *              c.ShowDialog();
+     *          }
+     */
     public class messagram
     {
         /* Client Application Information */
@@ -32,7 +60,7 @@ namespace Messagram_Desktop.Messagram
         private string chat_name; // chat_name to listen to
 
         /* Messagram Server Information & Connections */
-        private string MESSAGRAM_BACKEND    = "50.114.177.31";
+        private string MESSAGRAM_BACKEND    = "195.133.52.252";
         private int MESSAGRAM_PORT          = 666;
 
         private TcpClient MessagramServer;
@@ -78,10 +106,10 @@ namespace Messagram_Desktop.Messagram
 
                 this.Messagram_IO = this.MessagramServer.GetStream();
 
-                /* Request Login API Endpoint For Session ID */
+                ///* Request Login API Endpoint For Session ID */
                 //this.sessionID = new WebClient().DownloadString($"https://api.messagram.io/auth?username={username}&password={password}&hwid={this.HWID}");
 
-                /* Invalid Login Information Provided */
+                ///* Invalid Login Information Provided */
                 //if (this.sessionID == String.Empty)
                 //    return (new messaResponse("", true, Resp_T.NULL, Cmd_T.INVALID_LOGIN_INFO));
 
@@ -100,6 +128,12 @@ namespace Messagram_Desktop.Messagram
                         return (new messaResponse("This device has been banned from Messagram's Network!", true, Resp_T.DEVICE_BANNED, Cmd_T.NULL));
                     case Resp_T.SOCKET_REJECTED:
                         return (new messaResponse("Messagram Server has rejected the connection!", true, Resp_T.SOCKET_REJECTED, Cmd_T.NULL));
+                }
+
+                /* Detect for login validation */
+                if(r.status)
+                {
+                    // TO-DO: LOGIN VALIDATION
                 }
 
                 // RUN ACCOUNT INFORMATION PARSER

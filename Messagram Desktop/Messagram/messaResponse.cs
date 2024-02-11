@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Messagram_Desktop.Messagram
 {
@@ -18,6 +19,8 @@ namespace Messagram_Desktop.Messagram
         public Cmd_T cmd;
         public string data;
 
+        public string[] t = new string[] { };
+
         public messaResponse(string d, bool build = false, Resp_T r = Resp_T.NULL, Cmd_T c = Cmd_T.NULL, string[] args = null)
         {
             /* Build a new Cmd for Server */
@@ -25,6 +28,8 @@ namespace Messagram_Desktop.Messagram
             {
                 this.cmd = c;
                 this.resp_t = r;
+                if (args.Length == 0)
+                    return;
                 this.data = this.BuildCmd(args);
                 return;
             }
@@ -82,11 +87,11 @@ namespace Messagram_Desktop.Messagram
 
         public string BuildCmd(string[] args)
         {
+            // Only Accepting the following array formats
             string _new = "{";
             switch(this.cmd)
             {
                 case Cmd_T.CLIENT_AUTHENICATION:
-                    // Only Accepting the following array format
                     // username, sessionID, hwid, client_name, client_version
                     if (args.Length != 5)
                     {
@@ -98,7 +103,6 @@ namespace Messagram_Desktop.Messagram
                     break;
 
                 case Cmd_T.SEND_FRIEND_REQ:
-                    // Only Accepting the following array format
                     // username, sessionID, hwid, to_username, client_name, client_version
                     if(args.Length != 6)
                     {
@@ -111,7 +115,6 @@ namespace Messagram_Desktop.Messagram
 
                     // FILL THE REST HERE
                 case Cmd_T.SEND_DM_MSG:
-                    // Only Accepting the following array format
                     // username, sessionID, hwid, to_username, data, client_name, client_version
                     if (args.Length != 7)
                     {
@@ -129,9 +132,10 @@ namespace Messagram_Desktop.Messagram
 
         public string build_client_auth_keys(string[] args)
         {
+            // Assuming the arrow is in order
+            // username, sessionID, hwid, client_name, client_version
             string json_keys = "\"cmd\": \"client_authenication\", ";
 
-            // Assuming the arrow is in order
             int c = 0;
             foreach (string arg in args)
             {
@@ -150,7 +154,7 @@ namespace Messagram_Desktop.Messagram
                         json_keys += $"\"client_name\": \"{arg}\", ";
                         break;
                     case 4:
-                        json_keys += $"\"client_version\": \"{arg}\" ";
+                        json_keys += $"\"client_version\": \"{arg}\"";
                         break;
                 }
                 c++;
@@ -161,10 +165,10 @@ namespace Messagram_Desktop.Messagram
 
         public string build_friend_req_cmd_key(string[] args)
         {
-
+            // Assuming the arrow is in order
+            // username, sessionID, hwid, to_username, client_name, client_version
             string json_keys = "\"cmd\": \"user_friend_request\", ";
 
-            // Assuming the arrow is in order
             int c = 0;
             foreach (string arg in args)
             {
@@ -186,7 +190,7 @@ namespace Messagram_Desktop.Messagram
                         json_keys += $"\"client_name\": \"{arg}\", ";
                         break;
                     case 5:
-                        json_keys += $"\"client_version\": \"{arg}\" ";
+                        json_keys += $"\"client_version\": \"{arg}\"";
                         break;
                 }
                 c++;
@@ -199,10 +203,10 @@ namespace Messagram_Desktop.Messagram
 
         public string build_send_dm_msg_cmd_key(string[] args)
         {
-
+            // Assuming the arrow is in order
+            // username, sessionID, hwid, to_username, data, client_name, client_version
             string json_keys = "\"cmd\": \"send_dm_msg\", ";
 
-            // Assuming the arrow is in order
             int c = 0;
             foreach (string arg in args)
             {
@@ -227,7 +231,7 @@ namespace Messagram_Desktop.Messagram
                         json_keys += $"\"client_name\": \"{arg}\", ";
                         break;
                     case 6:
-                        json_keys += $"\"client_version\": \"{arg}\" ";
+                        json_keys += $"\"client_version\": \"{arg}\"";
                         break;
                 }
                 c++;

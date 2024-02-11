@@ -11,17 +11,25 @@ using System.Windows.Forms;
 
 namespace Messagram_Desktop
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        messagram m;
+        public Main()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            messagram m = new messagram("official_client", "0.0.1");
-            m.ConnectnAuthorize("root", "root");
+            SignIn login = new SignIn();
+            login.ShowDialog();
+
+
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            m.terminate = true;
         }
     }
 }
