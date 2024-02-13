@@ -28,8 +28,6 @@ namespace Messagram_Desktop.Messagram
             {
                 this.cmd = c;
                 this.resp_t = r;
-                if (args.Length == 0)
-                    return;
                 this.data = this.BuildCmd(args);
                 return;
             }
@@ -71,18 +69,7 @@ namespace Messagram_Desktop.Messagram
             if (this.resp_t == Resp_T.NULL)
                 return;
 
-            Resp_T[] user_cmds = { Resp_T.USER_RESP,
-                                   Resp_T.INVALID_CONNECTION,
-                                   Resp_T.SOCKET_REJECTED };
-
-            if(user_cmds.Contains(this.resp_t))
-            {
-                this.data = info[2].Replace("data:", "");
-            } else if(this.resp_t == Resp_T.PUSH_EVENT || this.resp_t == Resp_T.MASS_EVENT)
-            {
-                //this.cmd = info[2].Replace("cmd:", "").Replace(" ", "");
-                this.data = info[3].Replace("data:", "");
-            }
+            //this.cmd
         }
 
         public string BuildCmd(string[] args)
@@ -91,7 +78,7 @@ namespace Messagram_Desktop.Messagram
             string _new = "{";
             switch(this.cmd)
             {
-                case Cmd_T.CLIENT_AUTHENICATION:
+                case Cmd_T.CLIENT_AUTHENTICATION:
                     // username, sessionID, hwid, client_name, client_version
                     if (args.Length != 5)
                     {
@@ -134,7 +121,7 @@ namespace Messagram_Desktop.Messagram
         {
             // Assuming the arrow is in order
             // username, sessionID, hwid, client_name, client_version
-            string json_keys = "\"cmd\": \"client_authenication\", ";
+            string json_keys = "\"cmd_t\": \"client_authentication\", ";
 
             int c = 0;
             foreach (string arg in args)
@@ -145,7 +132,7 @@ namespace Messagram_Desktop.Messagram
                         json_keys += $"\"username\": \"{arg}\", ";
                         break;
                     case 1:
-                        json_keys += $"\"sessionID\": \"{arg}\", ";
+                        json_keys += $"\"sid\": \"{arg}\", ";
                         break;
                     case 2:
                         json_keys += $"\"hwid\": \"{arg}\", ";
@@ -167,7 +154,7 @@ namespace Messagram_Desktop.Messagram
         {
             // Assuming the arrow is in order
             // username, sessionID, hwid, to_username, client_name, client_version
-            string json_keys = "\"cmd\": \"user_friend_request\", ";
+            string json_keys = "\"cmd_t\": \"user_friend_request\", ";
 
             int c = 0;
             foreach (string arg in args)
@@ -205,7 +192,7 @@ namespace Messagram_Desktop.Messagram
         {
             // Assuming the arrow is in order
             // username, sessionID, hwid, to_username, data, client_name, client_version
-            string json_keys = "\"cmd\": \"send_dm_msg\", ";
+            string json_keys = "\"cmd_t\": \"send_dm_msg\", ";
 
             int c = 0;
             foreach (string arg in args)

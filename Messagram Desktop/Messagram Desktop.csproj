@@ -52,6 +52,7 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Messagram\community.cs" />
     <Compile Include="Messagram\messagram.cs" />
     <Compile Include="Messagram\messaResponse.cs" />
     <Compile Include="Messagram\objects.cs" />

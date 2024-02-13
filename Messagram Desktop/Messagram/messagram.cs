@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Security.Cryptography;
+using System.Management;
+using Microsoft.Win32;
 
 namespace Messagram_Desktop.Messagram
 {
@@ -63,12 +65,14 @@ namespace Messagram_Desktop.Messagram
         private string MESSAGRAM_BACKEND    = "195.133.52.252";
         private int MESSAGRAM_PORT          = 666;
 
-        private TcpClient MessagramServer;
-        private NetworkStream Messagram_IO;
+        public TcpClient MessagramServer;
+        public NetworkStream Messagram_IO;
 
         public bool terminate = false;
 
         public Thread listener;
+
+        public string MessagramLogs = string.Empty;
         public messagram(string client_name, string client_v)
         {
             this.CLIENT_NAME = client_name;
@@ -91,6 +95,7 @@ namespace Messagram_Desktop.Messagram
         private void retrieveHardwareInfo()
         {
             // Get Hardware Info And Addresses
+            this.HWID = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\IDConfigDB\Hardware Profiles\0001", "HwProfileGuid", null).ToString();
         }
 
         /*
@@ -101,21 +106,22 @@ namespace Messagram_Desktop.Messagram
         public messaResponse ConnectnAuthorize(string username, string password)
         {
             try {
+                this.retrieveHardwareInfo();
 
                 this.MessagramServer = new TcpClient(this.MESSAGRAM_BACKEND, this.MESSAGRAM_PORT);
 
                 this.Messagram_IO = this.MessagramServer.GetStream();
 
                 ///* Request Login API Endpoint For Session ID */
-                //this.sessionID = new WebClient().DownloadString($"https://api.messagram.io/auth?username={username}&password={password}&hwid={this.HWID}");
+                this.sessionID = new WebClient().DownloadString($"https://api.yomarket.info/auth?username={username}&password={password}&hwid={this.HWID}");
 
                 ///* Invalid Login Information Provided */
-                //if (this.sessionID == String.Empty)
-                //    return (new messaResponse("", true, Resp_T.NULL, Cmd_T.INVALID_LOGIN_INFO));
+                if (this.sessionID == String.Empty)
+                    return (new messaResponse("", true, Resp_T.NULL, Cmd_T.INVALID_LOGIN_INFO));
 
                 /* BUILD AUTH COMMAND */
                 string[] cmd_info = { username, this.sessionID, this.HWID, this.CLIENT_NAME, $"{this.CLIENT_VERSION}" };
-                messaResponse newCMD = this.BuildMessagramCmd(Cmd_T.CLIENT_AUTHENICATION, cmd_info);
+                messaResponse newCMD = this.BuildMessagramCmd(Cmd_T.CLIENT_AUTHENTICATION, cmd_info);
 
                 /* Send Auth Information and Receive Auth Response */
                 messaResponse r = this.SendCmd(newCMD);
@@ -145,11 +151,19 @@ namespace Messagram_Desktop.Messagram
 
                 /* Return a Success Signal For Developers */
                 return (new messaResponse("Client connected to Messagram Server", true, Resp_T.SOCKET_CONNECTED, Cmd_T.SUCCESSFUL_LOGIN));
-            } catch
+            } catch(Exception e)
             {
+                MessageBox.Show($"{e}");
                 return (new messaResponse("Invalid connection", true, Resp_T.INVALID_CONNECTION, Cmd_T.NULL));
             }
 
+        }
+
+        public void die()
+        {
+            this.MessagramServer.Close();
+            this.Messagram_IO.Close();
+            this.listener.Abort();
         }
 
         /*
@@ -168,6 +182,7 @@ namespace Messagram_Desktop.Messagram
                 Byte[] data = new Byte[256];
                 Int32 bytes = this.Messagram_IO.Read(data, 0, data.Length);
                 string server_data = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                this.MessagramLogs += $"{server_data}\n";
 
                 messaResponse r = new messaResponse(server_data);
                 Resp_T res_t = r.resp_t;
@@ -220,6 +235,7 @@ namespace Messagram_Desktop.Messagram
 
             Int32 bytes = this.Messagram_IO.Read(data, 0, data.Length);
             string resp = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+            this.MessagramLogs += $"{resp}\n";
             return (new messaResponse(resp, false));
         }
 

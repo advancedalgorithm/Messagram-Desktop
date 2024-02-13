@@ -35,7 +35,7 @@ namespace Messagram_Desktop.Messagram
          * The developer using this client library only needs to know what these objects
          * are used for in-order to build a better response message for the user on client
          * 
-         * !!! Server response message is NOT for USER output !!!
+         * !!! The Server will not respond with a neat message to output for users !!!
          */
 
 
@@ -48,12 +48,17 @@ namespace Messagram_Desktop.Messagram
         /* 
          * LOGIN CMDS FOR SERVER 
         */
-        CLIENT_AUTHENICATION,               // Sending login information
+        CLIENT_AUTHENTICATION,               // Sending login information
 
 
         /* 
          * LOGIN CMD RESPONSES FROM SERVER 
         */
+        ADD_SMS_AUTH,                       // SEND NEW PHONE NUMBER FOR VERIFICATION
+        ADD_NEW_EMAIL,                      // CHANGE CURRENT EMAIL FOR VERIFICATION
+        SEND_PIN_VERIFICATION_CODE,         // SEND PIN VERIFICATION CODE
+        SEND_SMS_VERIFICATION_CODE,         // SEND SMS VERIFICATION CODE
+        SEND_EMAIL_VERIFICATION_CODE,       // SEND EMAIL VERIFICATION CODE
 
         /* SUCCESS OPERATIONS */
         SUCCESSFUL_LOGIN,                   // LOGIN SUCCESSFUL
@@ -114,9 +119,17 @@ namespace Messagram_Desktop.Messagram
         SEND_DM_RACTION,                    // SEND DM REACTION
         SEND_DM_REACTION_RM,                // SEND DM REACTION REMOVAL
 
+        /* OPERATION RESPONSES */
+        DM_SENT,                            // DM SUCCESSFULLY SENT
+        DM_FAILED,                          // DM FAILED
+
         /*
          * COMMUNITY CMD FOR SERVER
         */
+        /* FAILED OPERATIONS */
+        INVALID_ROLE_PERMS,                 // ROLE DOES NOT CONTAIN PERMISSION FOR OPERATION REQUESTED
+
+        /* COMMUNITY CREATION & SETTING EDITING */
         CREATE_COMMUNITY,                   // CREATE A COMMUNITY (LIKE A DISCORD SERVER)
         EDIT_COMMUNITY,                     // Edit Community Info/Settings (EDIT A COMMUNITY SETTINGS OR INFO)
         INVO_TOGGLE,                        // Enable/Disable Community Invites (EDIT THE INVITE TOGGLE)
@@ -170,6 +183,90 @@ namespace Messagram_Desktop.Messagram
             }
 
             return Resp_T.NULL;
+        }
+
+
+        public static Cmd_T cmd2type(string cmd)
+        {
+            switch(cmd)
+            {
+                /* Upon Connecting Cmd Responses */
+                case "invalid_cmd":
+                    return Cmd_T.INVALID_CMD;
+                case "invalid_parameters":
+                    return Cmd_T.INVALID_PARAMETERS;
+                case "invalid_perm":
+                    return Cmd_T.INVALID_PERM;
+                case "invalid_operation":
+                    return Cmd_T.INVALID_OPERATION;
+
+                    /* Login Cmd Responses */
+                case "client_authentication":
+                    return Cmd_T.CLIENT_AUTHENTICATION;
+                case "successful_login":
+                    return Cmd_T.SUCCESSFUL_LOGIN;
+                case "add_sms_auth":
+                    return Cmd_T.ADD_SMS_AUTH;
+                case "add_new_email":
+                    return Cmd_T.ADD_NEW_EMAIL;
+                case "send_pin_verification_code":
+                    return Cmd_T.SEND_PIN_VERIFICATION_CODE;
+                case "send_sms_verification_code":
+                    return Cmd_T.SEND_SMS_VERIFICATION_CODE;
+                case "send_email_verification_code":
+                    return Cmd_T.SEND_EMAIL_VERIFICATION_CODE;
+                case "new_email_added":
+                    return Cmd_T.NEW_EMAIL_ADDED;
+                case "trust_confirmed":
+                    return Cmd_T.TRUST_CONFIRMED;
+                case "sms_verified":
+                    return Cmd_T.SMS_VERIFIED;
+                case "pin_verified":
+                    return Cmd_T.PIN_VERIFIED;
+                case "number_added":
+                    return Cmd_T.NUMBER_ADDED;
+                case "invalid_login_info":
+                    return Cmd_T.INVALID_LOGIN_INFO;
+                case "account_perm_ban":
+                    return Cmd_T.ACCOUNT_PERM_BAN;
+                case "account_temp_ban":
+                    return Cmd_T.ACCOUNT_TEMP_BAN;
+                case "force_confirm_email":
+                    return Cmd_T.FORCE_CONFIRM_EMAIL;
+                case "force_device_trust":
+                    return Cmd_T.FORCE_DEVICE_TRUST;
+                case "force_add_phone_number_request":
+                    return Cmd_T.FORCE_ADD_PHONE_NUMBER_REQUEST;
+                case "verify_pin_code":
+                    return Cmd_T.VERIFY_PIN_CODE;
+                case "verify_sms_code":
+                    return Cmd_T.VERIFY_SMS_CODE;
+
+                /* User Friend Request Cmd Responses */
+                case "send_friend_req":
+                    return Cmd_T.SEND_FRIEND_REQ;
+                case "cancel_friend_req":
+                    return Cmd_T.CANCEL_FRIEND_REQ;
+                case "friend_request_sent":
+                    return Cmd_T.FRIEND_REQUEST_SENT;
+                case "failed_to_send_friend_request":
+                    return Cmd_T.FAILED_TO_SEND_FRIEND_REQUEST;
+                case "blocked_by_user":
+                    return Cmd_T.BLOCKED_BY_USER;
+
+                /* User Dm Cmd Responses */
+                case "send_dm_msg":
+                    return Cmd_T.SEND_DM_MSG;
+                case "send_dm_msg_rm":
+                    return Cmd_T.SEND_DM_MSG_RM;
+                case "send_dm_reaction":
+                    return Cmd_T.SEND_DM_RACTION;
+                case "dm_sent":
+                    return Cmd_T.DM_SENT;
+                case "dm_failed":
+                    return Cmd_T.DM_FAILED;
+            }
+            return Cmd_T.NULL;
         }
     }
 }

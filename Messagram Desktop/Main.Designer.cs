@@ -43,12 +43,16 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.chat_list = new System.Windows.Forms.ListBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.MessageTabContainer.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -90,13 +94,14 @@
             this.label1.Size = new System.Drawing.Size(15, 16);
             this.label1.TabIndex = 1;
             this.label1.Text = "X";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
-            this.label5.Location = new System.Drawing.Point(6, 14);
+            this.label5.Location = new System.Drawing.Point(7, 6);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(74, 24);
             this.label5.TabIndex = 1;
@@ -106,28 +111,26 @@
             // 
             this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel5.Location = new System.Drawing.Point(0, 45);
+            this.panel5.Location = new System.Drawing.Point(0, 37);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(680, 3);
             this.panel5.TabIndex = 0;
             // 
             // MessageTabContainer
             // 
-            this.MessageTabContainer.Controls.Add(this.panel4);
-            this.MessageTabContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MessageTabContainer.Location = new System.Drawing.Point(120, 37);
+            this.MessageTabContainer.Controls.Add(this.richTextBox1);
+            this.MessageTabContainer.Location = new System.Drawing.Point(120, 80);
             this.MessageTabContainer.Name = "MessageTabContainer";
-            this.MessageTabContainer.Size = new System.Drawing.Size(680, 413);
+            this.MessageTabContainer.Size = new System.Drawing.Size(680, 372);
             this.MessageTabContainer.TabIndex = 10;
             // 
             // panel4
             // 
             this.panel4.Controls.Add(this.label5);
             this.panel4.Controls.Add(this.panel5);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
+            this.panel4.Location = new System.Drawing.Point(120, 40);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(680, 48);
+            this.panel4.Size = new System.Drawing.Size(680, 40);
             this.panel4.TabIndex = 0;
             // 
             // button1
@@ -136,23 +139,22 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(134, 23);
             this.button1.TabIndex = 4;
-            this.button1.Text = "Spawn New Community";
+            this.button1.Text = "Check Server Count";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // AccountSettings
             // 
-            this.AccountSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AccountSettings.Location = new System.Drawing.Point(120, 37);
+            this.AccountSettings.Location = new System.Drawing.Point(120, 80);
             this.AccountSettings.Name = "AccountSettings";
-            this.AccountSettings.Size = new System.Drawing.Size(680, 413);
+            this.AccountSettings.Size = new System.Drawing.Size(680, 372);
             this.AccountSettings.TabIndex = 8;
             // 
             // CommunitySettings
             // 
-            this.CommunitySettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CommunitySettings.Location = new System.Drawing.Point(120, 37);
+            this.CommunitySettings.Location = new System.Drawing.Point(120, 80);
             this.CommunitySettings.Name = "CommunitySettings";
-            this.CommunitySettings.Size = new System.Drawing.Size(680, 413);
+            this.CommunitySettings.Size = new System.Drawing.Size(680, 372);
             this.CommunitySettings.TabIndex = 9;
             // 
             // label3
@@ -192,31 +194,30 @@
             this.pictureBox4.TabIndex = 0;
             this.pictureBox4.TabStop = false;
             // 
-            // listBox1
+            // chat_list
             // 
-            this.listBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
-            this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Items.AddRange(new object[] {
-            "Messagram"});
-            this.listBox1.Location = new System.Drawing.Point(0, 54);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 272);
-            this.listBox1.TabIndex = 2;
+            this.chat_list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.chat_list.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.chat_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chat_list.FormattingEnabled = true;
+            this.chat_list.ItemHeight = 16;
+            this.chat_list.Location = new System.Drawing.Point(0, 54);
+            this.chat_list.Name = "chat_list";
+            this.chat_list.Size = new System.Drawing.Size(120, 272);
+            this.chat_list.TabIndex = 2;
+            this.chat_list.SelectedIndexChanged += new System.EventHandler(this.chat_list_SelectedIndexChanged);
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
             this.panel2.Controls.Add(this.panel3);
-            this.panel2.Controls.Add(this.listBox1);
+            this.panel2.Controls.Add(this.chat_list);
             this.panel2.Controls.Add(this.pictureBox3);
             this.panel2.Controls.Add(this.pictureBox2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 37);
+            this.panel2.Location = new System.Drawing.Point(0, 40);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(120, 413);
+            this.panel2.Size = new System.Drawing.Size(120, 410);
             this.panel2.TabIndex = 7;
             // 
             // pictureBox3
@@ -231,6 +232,7 @@
             // 
             // pictureBox2
             // 
+            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox2.Image = global::Messagram_Desktop.Properties.Resources.icons8_users_48;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
@@ -238,10 +240,14 @@
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.button3);
+            this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label2);
@@ -250,8 +256,9 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 37);
+            this.panel1.Size = new System.Drawing.Size(800, 40);
             this.panel1.TabIndex = 6;
+            this.panel1.MouseHover += new System.EventHandler(this.panel1_MouseHover);
             // 
             // pictureBox1
             // 
@@ -263,6 +270,44 @@
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(467, 7);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(134, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Spawn New Community";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBox1.Location = new System.Drawing.Point(151, 118);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(378, 198);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = "";
+            this.richTextBox1.MouseLeave += new System.EventHandler(this.richTextBox1_MouseLeave);
+            this.richTextBox1.MouseHover += new System.EventHandler(this.richTextBox1_MouseHover);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(632, 8);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(196, 8);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 7;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,11 +315,12 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.MessageTabContainer);
-            this.Controls.Add(this.AccountSettings);
             this.Controls.Add(this.CommunitySettings);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.AccountSettings);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
@@ -316,10 +362,14 @@
         private System.Windows.Forms.Panel CommunitySettings;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox chat_list;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
