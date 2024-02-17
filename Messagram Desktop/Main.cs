@@ -5,146 +5,233 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Configuration;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Messagram_Desktop
 {
     public partial class Main : Form
     {
-        public messagram m;
-        public Thread log_listener;
-
-        public ListBox friendsBox;
-        public ListBox[] servers = new ListBox[] { }; // LIST OF SERVERS
+        /* Required Properties */
+        public messagram Messagram;
+        public Thread messaListener;
         public Main()
         {
             InitializeComponent();
         }
 
+        /* Start of Messagram Client Application */
         private void Form1_Load(object sender, EventArgs e)
         {
+            /* Set Original Size Of Form To Load */
+            this.Size = new Size(801, 450);
+            panel6.Location = new Point(89, 406);
+
+            /* Send user to login and Grab Account/Connection Info */
             SignIn login = new SignIn();
             login.ShowDialog();
-            this.m = login.m;
+            this.Messagram = login.m;
 
-            richTextBox1.Parent = this;
-            richTextBox1.BringToFront();
+            /* Fix Both ChatBoxes For Community & DM */
+            this.fix_friendlist_box();
+            this.fix_chat_box();
 
-            this.log_listener = new Thread(get_logs);
-            this.log_listener.Start();
+            /* Bring Chatbox Up Front */
+            this.big_chat_box.BringToFront();
 
-
-            /* Create new listbox for friends list */
-            this.friendsBox = new ListBox();
-            this.friendsBox.Parent = MessageTabContainer;
-
-            /* Setting Size and Location */
-            this.friendsBox.Font = new Font("Microsoft Sans Serif", 15);
-            this.friendsBox.Location = new Point(0, 60);
-            this.friendsBox.Size = new Size(378, 198);
-            this.friendsBox.BackColor = Color.FromArgb(42, 42, 42);
-            this.friendsBox.BorderStyle = BorderStyle.None;
-            this.friendsBox.ForeColor = Color.Cyan;
-            this.friendsBox.Dock = DockStyle.Fill;
-
-            for (int i = 0; i <= 5; i++)
-                this.friendsBox.Items.Add($"{i} NEW FRIEND");
+            this.messaListener = new Thread(get_logs);
+            this.messaListener.Start();
         }
-
-        /*
-         * Spawns a new community/chatbox 
-         * 
-         * Used for user joining a community or creating one
-         */
-        public void spawn_new_server()
+       
+        public void fix_friendlist_box()
         {
-            /* Create the chat box */
-            ListBox new_server = new ListBox();
-            new_server.Parent = MessageTabContainer;
-
-            /* Setting Size and Location */
-            new_server.Font = new Font("Microsoft Sans Serif", 15);
-            new_server.Location = new Point(0, 60);
-            new_server.Size = new Size(378, 198);
-            new_server.BackColor = Color.FromArgb(42, 42, 42);
-            new_server.BorderStyle = BorderStyle.None;
-            new_server.ForeColor = Color.Cyan;
-            new_server.Dock = DockStyle.Fill;
-            new_server.BringToFront();
-
-            new_server.Items.Add($"Welcome to {textBox1.Text}'s Server....!");
-
-            ListBox[] n = new ListBox[] { new_server };
-
-            //this.servers = (ListBox[])n.Clone();
-            this.chat_list.Items.Add(textBox1.Text);
+            big_friendlist_box.Font = new Font("Microsoft Sans Serif", 15);
+            big_friendlist_box.Location = new Point(0, 60);
+            big_friendlist_box.Size = new Size(720, 320);
         }
 
+        public void fix_chat_box()
+        {
+            big_chat_box.Parent = MessageTabContainer;
+            big_chat_box.Font = new Font("Microsoft Sans Serif", 15);
+            big_chat_box.Location = new Point(1, 1);
+            big_chat_box.Size = new Size(720, 315);
+        }
+
+        public void AddMessage(string value)
+        {
+            if (InvokeRequired)
+            {
+                this.Invoke(new Action<string>(AddMessage), new object[] { value });
+                return;
+            }
+            big_chat_box.Items.Add(value);
+            
+            /* Scroll To The Bottom If MessageBox is Filled */
+            if(big_chat_box.Items.Count > 12) { 
+                int visibleItems = big_chat_box.ClientSize.Height / big_chat_box.ItemHeight;
+                big_chat_box.TopIndex = Math.Max(big_chat_box.Items.Count - visibleItems + 1, 0);
+            }
+        }
+
+
+        /* Enable a Message Listener */
         public void get_logs()
         {
+            this.AddMessage("Welcome to Messagram Server...!");
+            int last_count = 0;
+            string last_msg = "";
             while(true)
             {
-                richTextBox1.Text = this.m.MessagramLogs;
+                string[] msgs = this.Messagram.Messages.Split('\n');
+                if (msgs[msgs.Count() - 1] != last_msg)
+                {
+                    label8.Text = $"Messages @ {last_count}/{this.Messagram.Messages.Count()}";
+                    AddMessage(msgs[msgs.Count() - 1]);
+                    last_msg = msgs[msgs.Count() - 1];
+                }
                 Thread.Sleep(1000); // milliseconds
             }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.m.die();
+            this.Messagram.die();
         }
-
+        
         private void label1_Click(object sender, EventArgs e)
         {
-            this.log_listener.Abort();
-            this.m.die();
+            this.messaListener.Abort();
+            this.Messagram.die();
             Environment.Exit(0);
+        }
+
+        /* Minimize Form Button */
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            MessageBox.Show($"{this.servers.Length}");
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.spawn_new_server();
+
         }
 
-        private void richTextBox1_MouseHover(object sender, EventArgs e)
+        /* Log Display & Log Controls */
+        private void pictureBox7_Click(object sender, EventArgs e)
         {
+            this.Size = new Size(1017, 631);
 
+            string new_data = "";
+            int c = 0;
+            if (this.Messagram.Messages.Contains(""))
+            {
+
+            }
+
+            richTextBox1.Text = $"[@DEBUG LOGS]:\n\n{this.Messagram.ServerLogs}";
+            panel6.Location = new Point(89, 406);
         }
 
         private void richTextBox1_MouseLeave(object sender, EventArgs e)
         {
-            richTextBox1.Visible = false;
+            this.Size = new Size(801, 450);
+            panel6.Location = new Point(89, 406);
         }
 
-        private void panel1_MouseHover(object sender, EventArgs e)
-        {
-            richTextBox1.Visible = true;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /*
+         * Friend List Image 
+         */
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            this.friendsBox.BringToFront();
+            this.dm_list.BringToFront();
+            this.big_friendlist_box.BringToFront();
         }
 
         private void chat_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int i = this.chat_list.SelectedIndex;
-            MessageBox.Show($"Chats In ChatLIST:{this.chat_list.Items.Count}\nChats in 'this.servers': {this.servers.Length}\nCurrent Server Selected: {Convert.ToInt32(i)}");
-            this.servers[0].BringToFront();
+            //int i = this.dm_list.SelectedIndex;
+            //MessageBox.Show($"Chats In ChatLIST:{this.dm_list.Items.Count}\nChats in 'this.servers': {this.servers.Length}\nCurrent Server Selected: {Convert.ToInt32(i)}");
+        }
+
+        /*
+        *  Community List
+        */
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            community_list.BringToFront();
+            big_chat_box.BringToFront();
+        }
+
+        /* Settings Icon */
+        private void pictureBox5_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        /* Send message icon */
+        private void pictureBox6_Click(object sender, EventArgs e)
+        {
+            //messaResponse r = new messaResponse("", true, Resp_T.NULL, Cmd_T.SEND_DM_MSG, m.getInfo());
+            //r.BuildCmd(new string[] { "Jeff", "vibe", "Hi - From a C# Client" });
+            //MessageBox.Show($"{r.data}");
+            //this.m.SendCmd(r);
+        }
+
+        /*
+         *  Developer Kit // Used for testing purposes 
+         */
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                this.Messagram.listener.Abort();
+            }
+            catch { }
+            this.messaListener = new Thread(get_logs);
+            this.Messagram.ConnectnAuthorize("Jeff", "testpw123");
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            messaResponse r = new messaResponse("", true, Resp_T.NULL, Cmd_T.SEND_DM_MSG, this.Messagram.getInfo());
+            r.BuildCmd(new string[] { this.Messagram.Username, textBox1.Text, richTextBox2.Text });
+            this.Messagram.SendCmd(r);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            this.Messagram.listener.Abort();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            this.messaListener.Abort();
+        }
+
+        private void pictureBox1_MouseHover(object sender, EventArgs e)
+        {
+            panel6.Location = new Point(89, 406);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            label8.Text = $"Message Count: {this.Messagram.Messages.Count()}";
+
+            foreach (string s in this.Messagram.Messages.Split('\n'))
+            {
+                richTextBox3.Text = $"{s}\n";
+                big_chat_box.Items.Add($"{s}");
+            }
         }
     }
 }

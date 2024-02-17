@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -12,36 +13,57 @@ namespace Messagram_Desktop.Messagram
 
     public class messaResponse
     {
-        public string serverData;
+        /*
+         * keys that the JSON always need 
+         */
 
+        /* JSON Keys to Receive */
         public bool status;
+        public string resp;
         public Resp_T resp_t;
+
+
+        /* JSON TO SEND */
         public Cmd_T cmd;
+        public string cmd__;
+        public string username;
+        public string from_username;
+        public string to_username;
+        public string to_community;
         public string data;
 
-        public string[] t = new string[] { };
+        public string[] raw_json_info;
+        public string raw_json;
+        public string msg;
+        public string[] info;
 
-        public messaResponse(string d, bool build = false, Resp_T r = Resp_T.NULL, Cmd_T c = Cmd_T.NULL, string[] args = null)
+        public messaResponse(string d, bool build = false, Resp_T r = Resp_T.NULL, Cmd_T c = Cmd_T.NULL, string[] info = null, string[] args = null)
         {
+            this.data = d.Trim();
             /* Build a new Cmd for Server */
             if(build)
             {
                 this.cmd = c;
                 this.resp_t = r;
-                this.data = this.BuildCmd(args);
-                return;
-            }
-            
-            /* This will always fall in here when a response a received from server */
-            if (!d.StartsWith("{") && !d.StartsWith("}"))
-            {
-                this.resp_t = Resp_T.NULL;
+                this.info = info;
                 return;
             }
 
-            this.serverData = d;
             this.customJSONParse();
         }
+
+        public override string ToString()
+        {
+            return $"{this.data}";
+        }
+
+        /*
+         * 
+         * 
+         *      PARSING SERVER COMMAND RESPONSES BELOW
+         * 
+         * 
+         */
 
         public void customJSONParse()
         {
@@ -53,137 +75,87 @@ namespace Messagram_Desktop.Messagram
              * For more information read: https://github.com/advancedalgorithm/Messagram/blob/main/api.md
             */
 
-            string[] info = this.serverData.Replace("{\"", "").Replace("\"}", "").Replace("\": \"", ":").Split(',');
+            this.raw_json_info = this.data.Replace("{", "").Replace("}", "").Replace(": ", ":").Replace("\"", "").Replace("'", "").Split(',');
 
-            string status = info[0].Replace("status:", "").Replace(" ", ""); // This should always be true/false
+            if(this.data.Trim().Contains("\n"))
+                this.raw_json_info = this.data.Replace("{", "").Replace("}", "").Replace(": ", ":").Replace("\"", "").Replace("'", "").Split('\n');
 
-            if (status == "true")
-                this.status = bool.Parse(status);
-            else
-                return;
+            /* Retrieving and setting Status // This will always be false if never true */
+            string status = this.raw_json_info[0].Replace("status:", "").Replace(" ", ""); // This should always be true/false
+            if (status == "true") this.status = bool.Parse(status);
 
-            /* resp_t Should never have spaces */
-            this.resp_t = objects.resp2type(info[1].Replace("resp_t:", "").Replace(" ", ""));
 
-            /* NOTHING TO DO HERE */
-            if (this.resp_t == Resp_T.NULL)
-                return;
+            /* /* Set Resp_T && Cmd_T // resp_t Should never have spaces */
+            if (this.raw_json_info.Count() < 3) return;
+            MessageBox.Show($"{this.raw_json_info[1]} {this.raw_json_info[2]}");
+            this.resp_t = objects.resp2type(this.raw_json_info[1].Replace("resp_t:", "").Trim());
+            this.cmd = objects.cmd2type(this.raw_json_info[2].Replace("cmd_t:", "").Replace(" ", "").Trim());
 
-            //this.cmd
+            if (!this.data.Contains("data:"))
+            {
+                string[] json_info = this.data.Replace("{", "").Replace("}", "").Replace("\", \"", "\\").Replace("', '", "\\").Replace("\"", "").Replace("'", "").Split('\\');
+                this.from_username = this.raw_json_info[3].Replace("from_username:", "").Trim(); ;
+                this.to_username = this.raw_json_info[4].Replace("to_username:", "").Trim();
+                this.msg = json_info[json_info.Count() - 1].Replace("data:", "").Trim();
+            }
         }
 
-        public string BuildCmd(string[] args)
+        /*
+         * 
+         * 
+         *          COMMAND BUILDING FUNCTIONS BELOW
+         * 
+         * 
+         * 
+         */
+
+        public void BuildCmd(string[] args)
         {
             // Only Accepting the following array formats
-            string _new = "{";
-            switch(this.cmd)
+            /*
+            	"cmd_t":"client_authentication",
+	            "username":"Jeff",
+	            "sid":"70144081426107300636451535365233",
+	            "hwid":"{6d9c0696-ba90-11ee-94f1-806e6f6e6963}",
+	            "client_name":"official_client",
+	            "client_version":"0.0.1"
+            */
+
+            /* Formatting the beginning of the JSON data */
+            string _new = "{\"cmd_t\":\"" + $"{this.cmd}".ToLower() + "\", \"username\":\"{NEW_USERNAME}\", \"sid\":\"{NEW_SID}\", \"hwid\":\"{NEW_HWID}\", \"client_name\":\"{NEW_CLIENT}\", \"client_version\":\"{NEW_CVERSION}\", ";
+            _new = _new.Replace("{NEW_USERNAME}", this.info[0]).Replace("{NEW_SID}", this.info[1]).Replace("{NEW_HWID}", this.info[2]).Replace("{NEW_CLIENT}", this.info[3]).Replace("{NEW_CVERSION}", this.info[4]);
+
+
+            if (args.Length == 0) 
+            { 
+                this.data += _new + "}".Replace(",}", "").Replace(", }", "");
+                return;
+            }
+
+            switch (this.cmd)
             {
-                case Cmd_T.CLIENT_AUTHENTICATION:
-                    // username, sessionID, hwid, client_name, client_version
-                    if (args.Length != 5)
-                    {
-                        this.cmd = Cmd_T.INVALID_PARAMETERS;
-                        return "Invalid parameters";
-                    }
-
-                    _new += build_client_auth_keys(args);
-                    break;
-
                 case Cmd_T.SEND_FRIEND_REQ:
-                    // username, sessionID, hwid, to_username, client_name, client_version
-                    if(args.Length != 6)
-                    {
-                        this.cmd = Cmd_T.INVALID_PARAMETERS;
-                        return "Invalid parameters";
-                    }
-
                     _new += build_friend_req_cmd_key(args);
                     break;
-
-                    // FILL THE REST HERE
+                    
                 case Cmd_T.SEND_DM_MSG:
-                    // username, sessionID, hwid, to_username, data, client_name, client_version
-                    if (args.Length != 7)
-                    {
-                        this.cmd = Cmd_T.INVALID_PARAMETERS;
-                        return "Invalid parameters";
-                    }
 
                     _new += build_send_dm_msg_cmd_key(args);
                     break;
             }
 
             _new += "}";
-            return _new;
+            this.data += _new.Replace(", }", "}"); // Should never end like this unless its used for CLIENT_AUTHENTICATION
         }
-
-        public string build_client_auth_keys(string[] args)
-        {
-            // Assuming the arrow is in order
-            // username, sessionID, hwid, client_name, client_version
-            string json_keys = "\"cmd_t\": \"client_authentication\", ";
-
-            int c = 0;
-            foreach (string arg in args)
-            {
-                switch (c)
-                {
-                    case 0:
-                        json_keys += $"\"username\": \"{arg}\", ";
-                        break;
-                    case 1:
-                        json_keys += $"\"sid\": \"{arg}\", ";
-                        break;
-                    case 2:
-                        json_keys += $"\"hwid\": \"{arg}\", ";
-                        break;
-                    case 3:
-                        json_keys += $"\"client_name\": \"{arg}\", ";
-                        break;
-                    case 4:
-                        json_keys += $"\"client_version\": \"{arg}\"";
-                        break;
-                }
-                c++;
-            }
-
-            return json_keys;
-        }
-
+        
         public string build_friend_req_cmd_key(string[] args)
         {
-            // Assuming the arrow is in order
-            // username, sessionID, hwid, to_username, client_name, client_version
-            string json_keys = "\"cmd_t\": \"user_friend_request\", ";
+            if(args.Length == 1)
+                return $"\to_username\": \"{args[0]}\"";
 
-            int c = 0;
-            foreach (string arg in args)
-            {
-                switch (c)
-                {
-                    case 0:
-                        json_keys += $"\"username\": \"{arg}\", ";
-                        break;
-                    case 1:
-                        json_keys += $"\"sessionID\": \"{arg}\", ";
-                        break;
-                    case 2:
-                        json_keys += $"\"hwid\": \"{arg}\", ";
-                        break;
-                    case 3:
-                        json_keys += $"\to_username\": \"{arg}\", ";
-                        break;
-                    case 4:
-                        json_keys += $"\"client_name\": \"{arg}\", ";
-                        break;
-                    case 5:
-                        json_keys += $"\"client_version\": \"{arg}\"";
-                        break;
-                }
-                c++;
-            }
+            this.cmd = Cmd_T.INVALID_PARAMETERS;
 
-            return json_keys;
+            return "";
         }
 
 
@@ -192,39 +164,11 @@ namespace Messagram_Desktop.Messagram
         {
             // Assuming the arrow is in order
             // username, sessionID, hwid, to_username, data, client_name, client_version
-            string json_keys = "\"cmd_t\": \"send_dm_msg\", ";
+            if(args.Length == 3)
+                return $"\"from_username\": \"{args[0]}\", \"to_username\": \"{args[1]}\", \"data\": \"{args[2]}\", ";
 
-            int c = 0;
-            foreach (string arg in args)
-            {
-                switch (c)
-                {
-                    case 0:
-                        json_keys += $"\"username\": \"{arg}\", ";
-                        break;
-                    case 1:
-                        json_keys += $"\"sessionID\": \"{arg}\", ";
-                        break;
-                    case 2:
-                        json_keys += $"\"hwid\": \"{arg}\", ";
-                        break;
-                    case 3:
-                        json_keys += $"\to_username\": \"{arg}\", ";
-                        break;
-                    case 4:
-                        json_keys += $"\"data\": \"{arg}\", ";
-                        break;
-                    case 5:
-                        json_keys += $"\"client_name\": \"{arg}\", ";
-                        break;
-                    case 6:
-                        json_keys += $"\"client_version\": \"{arg}\"";
-                        break;
-                }
-                c++;
-            }
-
-            return json_keys;
+            this.cmd = Cmd_T.INVALID_PARAMETERS;
+            return "";
         }
     }
 }

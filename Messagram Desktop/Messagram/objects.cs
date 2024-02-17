@@ -265,6 +265,8 @@ namespace Messagram_Desktop.Messagram
                     return Cmd_T.DM_SENT;
                 case "dm_failed":
                     return Cmd_T.DM_FAILED;
+                case "dm_msg_received":
+                    return Cmd_T.DM_MSG_RECEIVED;
             }
             return Cmd_T.NULL;
         }

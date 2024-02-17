@@ -63,6 +63,16 @@ namespace Messagram_Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap download {
+            get {
+                object obj = ResourceManager.GetObject("download", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap GG {
             get {
                 object obj = ResourceManager.GetObject("GG", resourceCulture);
@@ -83,6 +93,16 @@ namespace Messagram_Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_dev_32 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-dev-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_settings_50 {
             get {
                 object obj = ResourceManager.GetObject("icons8-settings-50", resourceCulture);
@@ -96,6 +116,26 @@ namespace Messagram_Desktop.Properties {
         internal static System.Drawing.Bitmap icons8_users_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-users-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap output_onlinepngtools__11_ {
+            get {
+                object obj = ResourceManager.GetObject("output-onlinepngtools (11)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap send_message {
+            get {
+                object obj = ResourceManager.GetObject("send-message", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

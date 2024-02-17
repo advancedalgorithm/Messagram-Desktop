@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Messagram\community.cs" />
     <Compile Include="Messagram\messagram.cs" />
+    <Compile Include="Messagram\MessagramMessage.cs" />
     <Compile Include="Messagram\messaResponse.cs" />
     <Compile Include="Messagram\objects.cs" />
     <Compile Include="Program.cs" />
@@ -104,6 +105,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\GG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\send-message.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\output-onlinepngtools %2811%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-dev-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -53,8 +53,8 @@ namespace Messagram_Desktop.Messagram
 
         /* Client's Current User Information */
         public string Username;
-        private string sessionID;
-        private string HWID;
+        public string sessionID;
+        public string HWID;
 
         /* Client's Current Opened Chat */
         private bool chat_opened; // this must be enabled in-order to 
@@ -72,7 +72,9 @@ namespace Messagram_Desktop.Messagram
 
         public Thread listener;
 
-        public string MessagramLogs = string.Empty;
+        public string ServerLogs = string.Empty;
+
+        public string Messages = string.Empty;
         public messagram(string client_name, string client_v)
         {
             this.CLIENT_NAME = client_name;
@@ -88,14 +90,19 @@ namespace Messagram_Desktop.Messagram
             this.chat_opened = true;
             this.chat_name = chat_n;
             this.dm = dm;
-
-            // Send CMD
         }
+        
+        public string get_logs() { return this.ServerLogs; }
 
         private void retrieveHardwareInfo()
         {
             // Get Hardware Info And Addresses
             this.HWID = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\IDConfigDB\Hardware Profiles\0001", "HwProfileGuid", null).ToString();
+        }
+
+        public string[] getInfo()
+        {
+            return new string[] { this.Username, this.sessionID, this.HWID, this.CLIENT_NAME, $"{this.CLIENT_VERSION}" };
         }
 
         /*
@@ -111,36 +118,23 @@ namespace Messagram_Desktop.Messagram
                 this.MessagramServer = new TcpClient(this.MESSAGRAM_BACKEND, this.MESSAGRAM_PORT);
 
                 this.Messagram_IO = this.MessagramServer.GetStream();
+                this.ServerLogs += $"{this.Messagram_IO.ReadTimeout}";
 
-                ///* Request Login API Endpoint For Session ID */
+                /* Request Login API Endpoint For Session ID */
                 this.sessionID = new WebClient().DownloadString($"https://api.yomarket.info/auth?username={username}&password={password}&hwid={this.HWID}");
 
-                ///* Invalid Login Information Provided */
+                /* Invalid Login Information Provided */
                 if (this.sessionID == String.Empty)
-                    return (new messaResponse("", true, Resp_T.NULL, Cmd_T.INVALID_LOGIN_INFO));
+                    return (new messaResponse("Unable to connect to Messagram....!", true, Resp_T.INVALID_CONNECTION, Cmd_T.NULL));
 
                 /* BUILD AUTH COMMAND */
-                string[] cmd_info = { username, this.sessionID, this.HWID, this.CLIENT_NAME, $"{this.CLIENT_VERSION}" };
-                messaResponse newCMD = this.BuildMessagramCmd(Cmd_T.CLIENT_AUTHENTICATION, cmd_info);
+                this.Username = username;
+                messaResponse newCMD = this.BuildMessagramCmd(Cmd_T.CLIENT_AUTHENTICATION);
+                newCMD.BuildCmd(new string[] { });
 
                 /* Send Auth Information and Receive Auth Response */
-                messaResponse r = this.SendCmd(newCMD);
-                Resp_T rtype = r.resp_t;
+                this.SendCmd(newCMD);
 
-                /* Detect for bans and//or socket rejections */
-                switch (rtype)
-                {
-                    case Resp_T.DEVICE_BANNED:
-                        return (new messaResponse("This device has been banned from Messagram's Network!", true, Resp_T.DEVICE_BANNED, Cmd_T.NULL));
-                    case Resp_T.SOCKET_REJECTED:
-                        return (new messaResponse("Messagram Server has rejected the connection!", true, Resp_T.SOCKET_REJECTED, Cmd_T.NULL));
-                }
-
-                /* Detect for login validation */
-                if(r.status)
-                {
-                    // TO-DO: LOGIN VALIDATION
-                }
 
                 // RUN ACCOUNT INFORMATION PARSER
                 // parse_account_info(); // RECEIVE ALL DMS, COMMUNITES, and ACCOUNT SETTINGS
@@ -156,7 +150,6 @@ namespace Messagram_Desktop.Messagram
                 MessageBox.Show($"{e}");
                 return (new messaResponse("Invalid connection", true, Resp_T.INVALID_CONNECTION, Cmd_T.NULL));
             }
-
         }
 
         public void die()
@@ -174,32 +167,50 @@ namespace Messagram_Desktop.Messagram
         */
         public void Listener()
         {
-            while(true)
-            {
-                if (terminate)
-                    Environment.Exit(0);
-
-                Byte[] data = new Byte[256];
-                Int32 bytes = this.Messagram_IO.Read(data, 0, data.Length);
-                string server_data = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                this.MessagramLogs += $"{server_data}\n";
-
-                messaResponse r = new messaResponse(server_data);
-                Resp_T res_t = r.resp_t;
-
-                if (res_t == Resp_T.NULL)
-                    continue;
-
-                switch(res_t)
+            //try
+            //{
+                while (true)
                 {
-                    case Resp_T.PUSH_EVENT:
-                        // do something
-                        break;
-                    case Resp_T.MASS_EVENT:
-                        // do something
-                        break;
+                    if (terminate)
+                        Environment.Exit(0);
+
+                    Byte[] data = new Byte[256];
+                    Int32 bytes = this.Messagram_IO.Read(data, 0, data.Length);
+                    string server_data = System.Text.Encoding.ASCII.GetString(data, 0, bytes).Replace("\"", "");
+
+                    messaResponse r = new messaResponse(server_data);
+
+                    if (r.cmd == Cmd_T.NULL)
+                        continue;
+                    this.ServerLogs += $"[@RECEIVED-FROM-SERVER]\n${server_data}\n\n";
+
+                    switch (r.resp_t)
+                        {
+                        case Resp_T.USER_RESP:
+                            if (r.cmd == Cmd_T.SEND_DM_MSG || r.cmd == Cmd_T.DM_MSG_RECEIVED)
+                            {
+                                string str = $"{r.from_username}: {r.msg}"; MessageBox.Show(str);
+                                this.Messages += $"{str}";
+                                this.ServerLogs += $"Messages @ {this.Messages.Count()}\n";
+                            }
+                            continue;
+                        case Resp_T.PUSH_EVENT:
+                            this.handle_push_events(r);
+                            continue;
+                        case Resp_T.MASS_EVENT:
+                            this.handle_mass_events(r);
+                            // do something
+                            continue;
+                        default:
+                            this.ServerLogs += $"{server_data}";
+                            break;
+                    }
                 }
-            }
+            //} catch(Exception e)
+            //{
+            //    MessageBox.Show("Messagram Server has went down!");
+            //    //Environment.Exit(0);
+            //}
         }
 
         /* HANDLE PUSH EVENTS (Force Client To Lock, Ban, Modify Restrictions Etc */
@@ -216,7 +227,7 @@ namespace Messagram_Desktop.Messagram
         }
 
         /* HANDLE MASS EVENTS (Daily/Weekly/Monthly Update Announcements, Community Chats) */
-        public void handle_mass_events()
+        public void handle_mass_events(messaResponse r)
         {
 
         }
@@ -226,22 +237,20 @@ namespace Messagram_Desktop.Messagram
          *  
          *  and generate a new messaResponse() Class with data received
          */
-        public messaResponse SendCmd(messaResponse r)
+        public void SendCmd(messaResponse r)
         {
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes($"{r.data}\n");
+            this.ServerLogs += $"[@SEND-TO-SERVER]\n${r.data}\n\n";
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes($"{r.data}\n".Replace(", }", "}"));
             this.Messagram_IO.Write(data, 0, data.Length);
-
-            data = new Byte[256];
-
-            Int32 bytes = this.Messagram_IO.Read(data, 0, data.Length);
-            string resp = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-            this.MessagramLogs += $"{resp}\n";
-            return (new messaResponse(resp, false));
         }
 
         public messaResponse BuildMessagramCmd(Cmd_T c, string[] args = null)
         {
-            return (new messaResponse("", true, Resp_T.NULL, c, args));
+            return (new messaResponse("", 
+                                    true, 
+                                    Resp_T.NULL, 
+                                    c,
+                                    new string[] { this.Username, this.sessionID, this.HWID, this.CLIENT_NAME, $"{this.CLIENT_VERSION}" }, args));
         }
     }
 }
