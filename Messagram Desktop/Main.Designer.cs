@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -35,6 +36,8 @@
             this.panel5 = new System.Windows.Forms.Panel();
             this.MessageTabContainer = new System.Windows.Forms.Panel();
             this.big_chat_box = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyMessageTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.big_friendlist_box = new System.Windows.Forms.ListBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -51,7 +54,9 @@
             this.community_list = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.panel6 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.richTextBox2 = new System.Windows.Forms.RichTextBox();
@@ -78,7 +83,6 @@
             this.panel21 = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.panel22 = new System.Windows.Forms.Panel();
-            this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -88,7 +92,11 @@
             this.label6 = new System.Windows.Forms.Label();
             this.panel17 = new System.Windows.Forms.Panel();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MessageTabContainer.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
@@ -109,6 +117,7 @@
             this.panel21.SuspendLayout();
             this.panel16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
@@ -118,7 +127,7 @@
             this.label2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(971, 9);
+            this.label2.Location = new System.Drawing.Point(990, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(11, 16);
             this.label2.TabIndex = 2;
@@ -132,7 +141,7 @@
             this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(990, 9);
+            this.label1.Location = new System.Drawing.Point(1009, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(15, 16);
             this.label1.TabIndex = 1;
@@ -170,11 +179,10 @@
             // 
             // big_chat_box
             // 
-            this.big_chat_box.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.big_chat_box.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.big_chat_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.big_chat_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.big_chat_box.ContextMenuStrip = this.contextMenuStrip1;
             this.big_chat_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.big_chat_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
             this.big_chat_box.FormattingEnabled = true;
@@ -183,6 +191,20 @@
             this.big_chat_box.Name = "big_chat_box";
             this.big_chat_box.Size = new System.Drawing.Size(720, 315);
             this.big_chat_box.TabIndex = 1;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyMessageTextToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(176, 26);
+            // 
+            // copyMessageTextToolStripMenuItem
+            // 
+            this.copyMessageTextToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.copyMessageTextToolStripMenuItem.Name = "copyMessageTextToolStripMenuItem";
+            this.copyMessageTextToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.copyMessageTextToolStripMenuItem.Text = "Copy Message Text";
             // 
             // big_friendlist_box
             // 
@@ -242,6 +264,7 @@
             // 
             // panel3
             // 
+            this.panel3.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.panel3.Controls.Add(this.pictureBox5);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.pictureBox4);
@@ -263,16 +286,20 @@
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Location = new System.Drawing.Point(5, 39);
+            this.pictureBox4.Image = global::Messagram_Desktop.Properties.Resources.icons8_user_50;
+            this.pictureBox4.Location = new System.Drawing.Point(5, 34);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(35, 35);
+            this.pictureBox4.Size = new System.Drawing.Size(41, 40);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox4.TabIndex = 0;
             this.pictureBox4.TabStop = false;
             // 
             // dm_list
             // 
+            this.dm_list.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.dm_list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
             this.dm_list.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dm_list.ContextMenuStrip = this.contextMenuStrip2;
             this.dm_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dm_list.FormattingEnabled = true;
             this.dm_list.ItemHeight = 16;
@@ -288,12 +315,12 @@
             this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.pictureBox3);
             this.panel2.Controls.Add(this.pictureBox2);
-            this.panel2.Controls.Add(this.community_list);
             this.panel2.Controls.Add(this.dm_list);
+            this.panel2.Controls.Add(this.community_list);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 40);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(81, 591);
+            this.panel2.Size = new System.Drawing.Size(81, 410);
             this.panel2.TabIndex = 7;
             // 
             // pictureBox3
@@ -321,6 +348,7 @@
             // 
             // community_list
             // 
+            this.community_list.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.community_list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
             this.community_list.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.community_list.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -330,6 +358,7 @@
             this.community_list.Name = "community_list";
             this.community_list.Size = new System.Drawing.Size(81, 272);
             this.community_list.TabIndex = 4;
+            this.community_list.SelectedIndexChanged += new System.EventHandler(this.community_list_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -337,25 +366,40 @@
             this.panel1.Controls.Add(this.pictureBox7);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.button4);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1017, 40);
+            this.panel1.Size = new System.Drawing.Size(1036, 40);
             this.panel1.TabIndex = 6;
             // 
             // pictureBox7
             // 
             this.pictureBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox7.Image = global::Messagram_Desktop.Properties.Resources.icons8_dev_32;
-            this.pictureBox7.Location = new System.Drawing.Point(921, 3);
+            this.pictureBox7.Location = new System.Drawing.Point(940, 3);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(33, 33);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox7.TabIndex = 3;
             this.pictureBox7.TabStop = false;
             this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button4.Location = new System.Drawing.Point(285, 12);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(182, 23);
+            this.button4.TabIndex = 11;
+            this.button4.Text = "Send Message";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // pictureBox1
             // 
@@ -368,12 +412,26 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.MouseHover += new System.EventHandler(this.pictureBox1_MouseHover);
             // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button6.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button6.ForeColor = System.Drawing.Color.Black;
+            this.button6.Location = new System.Drawing.Point(7, 169);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(182, 23);
+            this.button6.TabIndex = 17;
+            this.button6.Text = "Friend Request Test";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // panel6
             // 
             this.panel6.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.panel6.Controls.Add(this.panel7);
             this.panel6.Controls.Add(this.richTextBox2);
-            this.panel6.Location = new System.Drawing.Point(89, 406);
+            this.panel6.Location = new System.Drawing.Point(206, 406);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(661, 40);
             this.panel6.TabIndex = 11;
@@ -463,11 +521,11 @@
             // 
             // panel13
             // 
+            this.panel13.Controls.Add(this.button6);
             this.panel13.Controls.Add(this.panel23);
             this.panel13.Controls.Add(this.button5);
             this.panel13.Controls.Add(this.label8);
             this.panel13.Controls.Add(this.panel18);
-            this.panel13.Controls.Add(this.button4);
             this.panel13.Controls.Add(this.button3);
             this.panel13.Controls.Add(this.button2);
             this.panel13.Controls.Add(this.button1);
@@ -555,12 +613,15 @@
             // 
             // button5
             // 
+            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button5.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button5.Location = new System.Drawing.Point(9, 304);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(182, 23);
             this.button5.TabIndex = 16;
-            this.button5.Text = "Add Friend";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Text = "Refresh Message Count";
+            this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label8
@@ -647,44 +708,43 @@
             this.panel22.Size = new System.Drawing.Size(180, 3);
             this.panel22.TabIndex = 2;
             // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(7, 168);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(182, 23);
-            this.button4.TabIndex = 11;
-            this.button4.Text = "Send Message";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
             // button3
             // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button3.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.Location = new System.Drawing.Point(7, 128);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(182, 23);
             this.button3.TabIndex = 10;
             this.button3.Text = "Reconnect To Messagram";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
             // button2
             // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Location = new System.Drawing.Point(7, 88);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(182, 23);
             this.button2.TabIndex = 9;
             this.button2.Text = "Stop Message Listener Thread";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Location = new System.Drawing.Point(7, 48);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(182, 23);
             this.button1.TabIndex = 8;
             this.button1.Text = "Stop Messagram Listener Thread";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // panel14
@@ -746,13 +806,36 @@
             this.pictureBox6.TabStop = false;
             this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
             // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.removeUserToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip1";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(159, 48);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(158, 22);
+            this.toolStripMenuItem1.Text = "Copy Username";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // removeUserToolStripMenuItem
+            // 
+            this.removeUserToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(224)))), ((int)(((byte)(244)))));
+            this.removeUserToolStripMenuItem.Name = "removeUserToolStripMenuItem";
+            this.removeUserToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.removeUserToolStripMenuItem.Text = "Remove User";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(42)))), ((int)(((byte)(42)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1017, 631);
+            this.ClientSize = new System.Drawing.Size(1036, 450);
             this.Controls.Add(this.panel13);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.pictureBox6);
@@ -770,6 +853,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MessageTabContainer.ResumeLayout(false);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -799,6 +883,7 @@
             this.panel16.ResumeLayout(false);
             this.panel16.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -863,6 +948,12 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panel27;
         private System.Windows.Forms.RichTextBox richTextBox3;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem copyMessageTextToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem removeUserToolStripMenuItem;
     }
 }
 

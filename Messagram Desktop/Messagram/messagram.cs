@@ -57,9 +57,11 @@ namespace Messagram_Desktop.Messagram
         public string HWID;
 
         /* Client's Current Opened Chat */
-        private bool chat_opened; // this must be enabled in-order to 
-        private bool dm; // dm on true, community chat on false
-        private string chat_name; // chat_name to listen to
+        public bool seen;
+        public bool listen_to_chat;
+        public string listen_to;
+        public Msg_T currentChat_T;
+        public MessagramMessage CurrentChats;
 
         /* Messagram Server Information & Connections */
         private string MESSAGRAM_BACKEND    = "195.133.52.252";
@@ -83,14 +85,10 @@ namespace Messagram_Desktop.Messagram
         }
 
         public void disableChat()
-        { this.chat_opened = false; }
+        { this.listen_to_chat = false; this.currentChat_T = Msg_T.NULL; this.listen_to = string.Empty; }
 
-        public void ChangeChat(string chat_n, bool dm)
-        {
-            this.chat_opened = true;
-            this.chat_name = chat_n;
-            this.dm = dm;
-        }
+        public void ChangeChat(Msg_T c, string username_or_com)
+        { this.listen_to_chat = true; this.currentChat_T = c; this.listen_to = username_or_com; }
         
         public string get_logs() { return this.ServerLogs; }
 
@@ -159,6 +157,18 @@ namespace Messagram_Desktop.Messagram
             this.listener.Abort();
         }
 
+        public string getLastMessage()
+        {
+            string[] messages_arr = this.Messages.Split('\n');
+            if (!this.seen)
+            {
+                this.seen = true;
+                return messages_arr[messages_arr.Count() - 1];
+            }
+
+            return "";
+        }
+
         /*
          * Listens to random events sent to the CLIENT upon connecting
          * 
@@ -176,21 +186,22 @@ namespace Messagram_Desktop.Messagram
 
                     Byte[] data = new Byte[256];
                     Int32 bytes = this.Messagram_IO.Read(data, 0, data.Length);
-                    string server_data = System.Text.Encoding.ASCII.GetString(data, 0, bytes).Replace("\"", "");
+                    string server_data = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
 
                     messaResponse r = new messaResponse(server_data);
 
                     if (r.cmd == Cmd_T.NULL)
                         continue;
-                    this.ServerLogs += $"[@RECEIVED-FROM-SERVER]\n${server_data}\n\n";
+
+                    this.ServerLogs += $"[@RECEIVED-FROM-SERVER]\n{server_data}\n\n";
 
                     switch (r.resp_t)
                         {
                         case Resp_T.USER_RESP:
                             if (r.cmd == Cmd_T.SEND_DM_MSG || r.cmd == Cmd_T.DM_MSG_RECEIVED)
                             {
-                                string str = $"{r.from_username}: {r.msg}"; MessageBox.Show(str);
-                                this.Messages += $"{str}";
+                                string str = $"{r.from_username}: {r.msg}";
+                                this.Messages += $"{str}\n";
                                 this.ServerLogs += $"Messages @ {this.Messages.Count()}\n";
                             }
                             continue;
@@ -202,7 +213,6 @@ namespace Messagram_Desktop.Messagram
                             // do something
                             continue;
                         default:
-                            this.ServerLogs += $"{server_data}";
                             break;
                     }
                 }

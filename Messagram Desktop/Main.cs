@@ -16,9 +16,13 @@ namespace Messagram_Desktop
 {
     public partial class Main : Form
     {
-        /* Required Properties */
+        /*
+         * [Required Properties]
+         * Messagram Server && Library Connectivity
+         */
         public messagram Messagram;
         public Thread messaListener;
+
         public Main()
         {
             InitializeComponent();
@@ -28,6 +32,7 @@ namespace Messagram_Desktop
         private void Form1_Load(object sender, EventArgs e)
         {
             /* Set Original Size Of Form To Load */
+            community_list.Items.Add("Messagram");
             this.Size = new Size(801, 450);
             panel6.Location = new Point(89, 406);
 
@@ -82,17 +87,22 @@ namespace Messagram_Desktop
         /* Enable a Message Listener */
         public void get_logs()
         {
+            this.Messagram.ServerLogs += $"Messagram Message Listener has started....!\n";
             this.AddMessage("Welcome to Messagram Server...!");
             int last_count = 0;
-            string last_msg = "";
-            while(true)
+            while(this.Messagram.terminate != true)
             {
                 string[] msgs = this.Messagram.Messages.Split('\n');
-                if (msgs[msgs.Count() - 1] != last_msg)
+                if (msgs.Count() != last_count)
                 {
-                    label8.Text = $"Messages @ {last_count}/{this.Messagram.Messages.Count()}";
-                    AddMessage(msgs[msgs.Count() - 1]);
-                    last_msg = msgs[msgs.Count() - 1];
+                    label8.Text = $"Messages @ {last_count}/{msgs.Count()}";
+                    string gg = ($"{msgs[msgs.Count() - 1]}" ?? $"{msgs[0]}");
+                    if(msgs.Count() == 0)
+                        this.AddMessage($"{gg}");
+                    else 
+                        this.AddMessage($"{gg}");
+
+                    last_count = msgs.Count();
                 }
                 Thread.Sleep(1000); // milliseconds
             }
@@ -126,18 +136,10 @@ namespace Messagram_Desktop
 
         }
 
-        /* Log Display & Log Controls */
+        /* Log Display & Log Controls [DEVKIT] */
         private void pictureBox7_Click(object sender, EventArgs e)
         {
             this.Size = new Size(1017, 631);
-
-            string new_data = "";
-            int c = 0;
-            if (this.Messagram.Messages.Contains(""))
-            {
-
-            }
-
             richTextBox1.Text = $"[@DEBUG LOGS]:\n\n{this.Messagram.ServerLogs}";
             panel6.Location = new Point(89, 406);
         }
@@ -159,8 +161,22 @@ namespace Messagram_Desktop
 
         private void chat_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //int i = this.dm_list.SelectedIndex;
-            //MessageBox.Show($"Chats In ChatLIST:{this.dm_list.Items.Count}\nChats in 'this.servers': {this.servers.Length}\nCurrent Server Selected: {Convert.ToInt32(i)}");
+            string listen2 = dm_list.SelectedItem.ToString();
+            this.Messagram.ChangeChat(Msg_T.DM, listen2);
+
+            label5.Text = $"{this.Messagram.listen_to}";
+            big_chat_box.BringToFront();
+            big_chat_box.Items.Clear();
+        }
+
+        private void community_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string listen2 = community_list.SelectedItem.ToString();
+            this.Messagram.ChangeChat(Msg_T.COMMUNITY, listen2);
+
+            label5.Text = $"{this.Messagram.listen_to}";
+            big_chat_box.BringToFront();
+            big_chat_box.Items.Clear();
         }
 
         /*
@@ -181,10 +197,9 @@ namespace Messagram_Desktop
         /* Send message icon */
         private void pictureBox6_Click(object sender, EventArgs e)
         {
-            //messaResponse r = new messaResponse("", true, Resp_T.NULL, Cmd_T.SEND_DM_MSG, m.getInfo());
-            //r.BuildCmd(new string[] { "Jeff", "vibe", "Hi - From a C# Client" });
-            //MessageBox.Show($"{r.data}");
-            //this.m.SendCmd(r);
+            messaResponse r = new messaResponse("", true, Resp_T.NULL, Cmd_T.SEND_DM_MSG, this.Messagram.getInfo());
+            r.BuildCmd(new string[] { this.Messagram.Username, textBox1.Text, richTextBox2.Text });
+            this.Messagram.SendCmd(r);
         }
 
         /*
@@ -232,6 +247,23 @@ namespace Messagram_Desktop
                 richTextBox3.Text = $"{s}\n";
                 big_chat_box.Items.Add($"{s}");
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            messaResponse r = new messaResponse("", true, Resp_T.NULL, Cmd_T.SEND_FRIEND_REQ, this.Messagram.getInfo());
+            r.BuildCmd(new string[] { this.Messagram.Username, textBox1.Text, richTextBox2.Text });
+            this.Messagram.ServerLogs += $"{r.data}";
+            //this.Messagram.SendCmd(r);
+            if (textBox1.Text.Length < 12)
+                dm_list.Items.Add($"{textBox1.Text}");
+            else
+                dm_list.Items.Add($"{textBox1.Text.Substring(0, 10)}...");
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

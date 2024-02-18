@@ -87,11 +87,10 @@ namespace Messagram_Desktop.Messagram
 
             /* /* Set Resp_T && Cmd_T // resp_t Should never have spaces */
             if (this.raw_json_info.Count() < 3) return;
-            MessageBox.Show($"{this.raw_json_info[1]} {this.raw_json_info[2]}");
             this.resp_t = objects.resp2type(this.raw_json_info[1].Replace("resp_t:", "").Trim());
             this.cmd = objects.cmd2type(this.raw_json_info[2].Replace("cmd_t:", "").Replace(" ", "").Trim());
 
-            if (!this.data.Contains("data:"))
+            if (this.data.Contains("\"data\":") || this.data.Contains("'data':"))
             {
                 string[] json_info = this.data.Replace("{", "").Replace("}", "").Replace("\", \"", "\\").Replace("', '", "\\").Replace("\"", "").Replace("'", "").Split('\\');
                 this.from_username = this.raw_json_info[3].Replace("from_username:", "").Trim(); ;

@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace Messagram_Desktop.Messagram
 {
+    public enum Msg_T
+    {
+        NULL,
+        DM,
+        COMMUNITY,
+    }
     public class MessagramMessage
     {
         public string from_username;
